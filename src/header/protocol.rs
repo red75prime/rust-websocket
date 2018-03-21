@@ -1,3 +1,4 @@
+#![cfg(feature="handshake")]
 use hyper::header::{Header, HeaderFormat};
 use hyper::header::parsing::{from_comma_delimited, fmt_comma_delimited};
 use hyper;

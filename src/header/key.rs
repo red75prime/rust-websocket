@@ -1,6 +1,9 @@
 use base64;
+#[cfg(feature="handshake")]
 use hyper::header::{Header, HeaderFormat};
+#[cfg(feature="handshake")]
 use hyper::header::parsing::from_one_raw_str;
+#[cfg(feature="handshake")]
 use hyper;
 use std::fmt::{self, Debug};
 use rand;
@@ -56,6 +59,7 @@ impl WebSocketKey {
 	}
 }
 
+#[cfg(feature="handshake")]
 impl Header for WebSocketKey {
 	fn header_name() -> &'static str {
 		"Sec-WebSocket-Key"
@@ -66,6 +70,7 @@ impl Header for WebSocketKey {
 	}
 }
 
+#[cfg(feature="handshake")]
 impl HeaderFormat for WebSocketKey {
 	fn fmt_header(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
 		write!(fmt, "{}", self.serialize())

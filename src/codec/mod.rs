@@ -10,5 +10,6 @@
 //! more low level) in the `ws` module.
 //! See it's module level documentation for more info.
 
+#[cfg(feature="handshake")]
 pub mod http;
 pub mod ws;

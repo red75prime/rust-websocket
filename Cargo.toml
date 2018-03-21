@@ -1,6 +1,6 @@
 [package]
 name = "websocket"
-version = "0.20.2"
+version = "0.21.1"
 authors = ["cyderize <admin@cyderize.org>", "Michael Eden <themichaeleden@gmail.com>"]
 
 description = "A WebSocket (RFC6455) library for Rust."
@@ -17,7 +17,7 @@ categories = ["asynchronous", "network-programming", "web-programming", "web-pro
 license = "MIT"
 
 [dependencies]
-hyper = "^0.10.6"
+hyper = { version = "^0.10.6", optional = true }
 unicase = "1.0"
 url = "1.0"
 bitflags = "0.9"
@@ -36,9 +36,10 @@ native-tls = { version = "^0.1.2", optional = true }
 futures-cpupool = "0.1"
 
 [features]
-default = ["sync", "sync-ssl", "async", "async-ssl"]
-sync = []
-sync-ssl = ["native-tls", "sync"]
+default = ["handshake", "sync", "sync-ssl", "async", "async-ssl"]
+handshake = ["hyper"]
+sync = ["handshake"]
+sync-ssl = ["handshake", "native-tls", "sync"]
 async = ["tokio-core", "tokio-io", "bytes", "futures"]
 async-ssl = ["native-tls", "tokio-tls", "async"]
-nightly = ["hyper/nightly"]
+nightly = ["handshake", "hyper/nightly"]

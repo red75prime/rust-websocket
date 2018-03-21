@@ -1,3 +1,4 @@
+#![cfg(feature="handshake")]
 use base64;
 use hyper::header::{Header, HeaderFormat};
 use hyper::header::parsing::from_one_raw_str;

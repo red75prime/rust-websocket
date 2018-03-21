@@ -5,8 +5,10 @@ use std::str::Utf8Error;
 use std::error::Error;
 use std::convert::From;
 use std::fmt;
+#[cfg(feature="handshake")]
 use hyper::Error as HttpError;
 use url::ParseError;
+#[cfg(feature="handshake")]
 use server::upgrade::HyperIntoWsError;
 
 #[cfg(any(feature="sync-ssl", feature="async-ssl"))]
@@ -45,6 +47,7 @@ pub enum WebSocketError {
 	/// An input/output error
 	IoError(io::Error),
 	/// An HTTP parsing error
+	#[cfg(feature="handshake")]
 	HttpError(HttpError),
 	/// A URL parsing error
 	UrlError(ParseError),
@@ -80,6 +83,7 @@ impl Error for WebSocketError {
 			WebSocketError::DataFrameError(_) => "WebSocket data frame error",
 			WebSocketError::NoDataAvailable => "No data available",
 			WebSocketError::IoError(_) => "I/O failure",
+			#[cfg(feature="handshake")]
 			WebSocketError::HttpError(_) => "HTTP failure",
 			WebSocketError::UrlError(_) => "URL failure",
 			#[cfg(any(feature="sync-ssl", feature="async-ssl"))]
@@ -96,6 +100,7 @@ impl Error for WebSocketError {
 	fn cause(&self) -> Option<&Error> {
 		match *self {
 			WebSocketError::IoError(ref error) => Some(error),
+			#[cfg(feature="handshake")]
 			WebSocketError::HttpError(ref error) => Some(error),
 			WebSocketError::UrlError(ref error) => Some(error),
 			#[cfg(any(feature="sync-ssl", feature="async-ssl"))]
@@ -116,6 +121,7 @@ impl From<io::Error> for WebSocketError {
 	}
 }
 
+#[cfg(feature="handshake")]
 impl From<HttpError> for WebSocketError {
 	fn from(err: HttpError) -> WebSocketError {
 		WebSocketError::HttpError(err)
@@ -151,7 +157,7 @@ impl From<Utf8Error> for WebSocketError {
 	}
 }
 
-#[cfg(feature="async")]
+#[cfg(all(feature="async", feature="handshake"))]
 impl From<::codec::http::HttpCodecError> for WebSocketError {
 	fn from(src: ::codec::http::HttpCodecError) -> Self {
 		match src {
@@ -167,6 +173,7 @@ impl From<WSUrlErrorKind> for WebSocketError {
 	}
 }
 
+#[cfg(feature="handshake")]
 impl From<HyperIntoWsError> for WebSocketError {
 	fn from(err: HyperIntoWsError) -> WebSocketError {
 		use self::HyperIntoWsError::*;

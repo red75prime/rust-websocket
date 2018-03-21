@@ -28,6 +28,7 @@
 //! # Extending Rust-WebSocket
 //! The `ws` module contains the traits and functions used by Rust-WebSocket at a lower
 //! level. Their usage is explained in the module documentation.
+#[cfg(feature="handshake")]
 extern crate hyper;
 extern crate unicase;
 pub extern crate url;
@@ -54,6 +55,7 @@ extern crate bitflags;
 #[cfg(all(feature = "nightly", test))]
 extern crate test;
 
+#[cfg(feature="handshake")]
 macro_rules! upsert_header {
     ($headers:expr; $header:ty; {
         Some($pat:pat) => $some_match:expr,
@@ -83,7 +85,9 @@ pub mod receiver;
 #[cfg(feature="sync")]
 pub mod sender;
 
+#[cfg(feature="handshake")]
 pub mod client;
+#[cfg(feature="handshake")]
 pub mod server;
 pub mod stream;
 
@@ -122,26 +126,32 @@ pub mod async {
 	pub use codec;
 	pub use codec::ws::MessageCodec;
 	pub use codec::ws::Context as MsgCodecCtx;
+	#[cfg(feature="handshake")]
 	pub use codec::http::HttpClientCodec;
+	#[cfg(feature="handshake")]
 	pub use codec::http::HttpServerCodec;
 
 	pub use stream::async::Stream;
 	pub use stream::async as stream;
 
 	/// A collection of handy asynchronous-only parts of the `server` module.
+	#[cfg(feature="handshake")]
 	pub mod server {
 		pub use server::async::*;
 		pub use server::upgrade::async::Upgrade;
 		pub use server::upgrade::async::IntoWs;
 		pub use server::upgrade::async as upgrade;
 	}
+	#[cfg(feature="handshake")]
 	pub use server::async::Server;
 
 	/// A collection of handy asynchronous-only parts of the `client` module.
+	#[cfg(feature="handshake")]
 	pub mod client {
 		pub use client::async::*;
 		pub use client::builder::ClientBuilder;
 	}
+	#[cfg(feature="handshake")]
 	pub use client::async::Client;
 
 	pub use result::async::WebSocketFuture;
@@ -156,6 +166,7 @@ pub mod async {
 pub use self::message::Message;
 pub use self::message::CloseData;
 pub use self::message::OwnedMessage;
+#[cfg(feature="handshake")]
 pub use self::client::builder::ClientBuilder;
 
 pub use self::result::WebSocketError;
