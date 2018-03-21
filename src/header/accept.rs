@@ -1,7 +1,9 @@
-#![cfg(feature="handshake")]
 use base64;
+#[cfg(feature="handshake")]
 use hyper::header::{Header, HeaderFormat};
+#[cfg(feature="handshake")]
 use hyper::header::parsing::from_one_raw_str;
+#[cfg(feature="handshake")]
 use hyper;
 use std::fmt::{self, Debug};
 use std::str::FromStr;
@@ -61,6 +63,7 @@ impl WebSocketAccept {
 	}
 }
 
+#[cfg(feature="handshake")]
 impl Header for WebSocketAccept {
 	fn header_name() -> &'static str {
 		"Sec-WebSocket-Accept"
@@ -71,6 +74,7 @@ impl Header for WebSocketAccept {
 	}
 }
 
+#[cfg(feature="handshake")]
 impl HeaderFormat for WebSocketAccept {
 	fn fmt_header(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
 		write!(fmt, "{}", self.serialize())

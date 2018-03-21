@@ -4,7 +4,6 @@
 //! The `Header` trait from the `hyper` crate is used.
 
 pub use self::key::WebSocketKey;
-#[cfg(feature="handshake")]
 pub use self::accept::WebSocketAccept;
 #[cfg(feature="handshake")]
 pub use self::protocol::WebSocketProtocol;
@@ -17,7 +16,6 @@ pub use self::origin::Origin;
 #[cfg(feature="handshake")]
 pub use hyper::header::*;
 
-#[cfg(feature="handshake")]
 mod accept;
 mod key;
 #[cfg(feature="handshake")]
