@@ -19,6 +19,7 @@ license = "MIT"
 [dependencies]
 hyper = { version = "^0.10.6", optional = true }
 unicase = "1.0"
+log = "0.4.1"
 url = "1.0"
 bitflags = "0.9"
 rand = "0.3"
