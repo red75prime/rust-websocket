@@ -238,7 +238,9 @@ impl<M> Decoder for MessageCodec<M>
 	type Error = WebSocketError;
 
 	fn decode(&mut self, src: &mut BytesMut) -> Result<Option<Self::Item>, Self::Error> {
+		trace!("MessageCodec. Decoding {} bytes", src.len());
 		while let Some(frame) = self.dataframe_codec.decode(src)? {
+			trace!("MessageCodec. After `DataFrameCodec::decode` {} bytes left", src.len());
 			let is_first = self.buffer.is_empty();
 			let finished = frame.finished;
 
