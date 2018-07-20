@@ -39,29 +39,29 @@ fn main() {
 						              })
 					      .and_then(|(msg, stream)| match msg {
 					                    Some(OwnedMessage::Text(txt)) => {
-						                    stream.send(OwnedMessage::Text(txt))
+						                    Box::new(stream.send(OwnedMessage::Text(txt))
 					                              .map(|s| Loop::Continue(s))
-					                              .boxed()
+											)
 					                    }
 					                    Some(OwnedMessage::Binary(bin)) => {
-						                    stream.send(OwnedMessage::Binary(bin))
+						                    Box::new(stream.send(OwnedMessage::Binary(bin))
 					                              .map(|s| Loop::Continue(s))
-					                              .boxed()
+					                        )
 					                    }
 					                    Some(OwnedMessage::Ping(data)) => {
-						                    stream.send(OwnedMessage::Pong(data))
+						                    Box::new(stream.send(OwnedMessage::Pong(data))
 					                              .map(|s| Loop::Continue(s))
-					                              .boxed()
+					                        )
 					                    }
 					                    Some(OwnedMessage::Close(_)) => {
-						                    stream.send(OwnedMessage::Close(None))
+						                    Box::new(stream.send(OwnedMessage::Close(None))
 					                              .map(|_| Loop::Break(()))
-					                              .boxed()
+					                        )
 					                    }
 					                    Some(OwnedMessage::Pong(_)) => {
-						                    future::ok(Loop::Continue(stream)).boxed()
+						                    Box::new(future::ok(Loop::Continue(stream)))
 					                    }
-					                    None => future::ok(Loop::Break(())).boxed(),
+					                    None => Box::new(future::ok(Loop::Break(()))),
 					                })
 				})
 			})
