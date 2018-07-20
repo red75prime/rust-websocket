@@ -41,7 +41,7 @@ fn main() {
 					                    Some(OwnedMessage::Text(txt)) => {
 						                    Box::new(stream.send(OwnedMessage::Text(txt))
 					                              .map(|s| Loop::Continue(s))
-											)
+											) as Box<Future<Item= _ , Error = _>>
 					                    }
 					                    Some(OwnedMessage::Binary(bin)) => {
 						                    Box::new(stream.send(OwnedMessage::Binary(bin))
